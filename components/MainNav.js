@@ -43,15 +43,16 @@ export default function MainNav() {
                             <Button className="btn btn-success" type="submit">Search</Button>
                         </Form>
                         &nbsp;
-                        <NavDropdown title="User Name" id="nav-dropdown">
-                            <Link href="/favourites" legacyBehavior passHref>
-                                <NavDropdown.Item>Favourites</NavDropdown.Item>
-                            </Link>
-                            <NavDropdown.Divider />
-                            <NavDropdown.Item href="#action/3.4">
-                                Separated link
-                            </NavDropdown.Item>
-                        </NavDropdown>
+                        <Nav>
+                            <NavDropdown title="User Name" id="nav-dropdown">
+                                <Link href="/favourites" legacyBehavior passHref>
+                                    <NavDropdown.Item>Favourites</NavDropdown.Item>
+                                </Link>
+                                <Link href="/history" legacyBehavior passHref>
+                                    <NavDropdown.Item>Search History</NavDropdown.Item>
+                                </Link>
+                            </NavDropdown>
+                        </Nav>
                     </Navbar.Collapse>
                 </Container>
             </Navbar>
