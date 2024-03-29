@@ -44,7 +44,9 @@ export default function MainNav() {
                         </Form>
                         &nbsp;
                         <NavDropdown title="User Name" id="nav-dropdown">
-                            <NavDropdown.Item href="/favourites">Favourites</NavDropdown.Item>
+                            <Link href="/favourites" legacyBehavior passHref>
+                                <NavDropdown.Item>Favourites</NavDropdown.Item>
+                            </Link>
                             <NavDropdown.Divider />
                             <NavDropdown.Item href="#action/3.4">
                                 Separated link

@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useAtom } from 'jotai';
-import { favouritesAtom, usePersistedAtom } from '../store'; // Adjust the path as necessary
-import { Card, Button } from 'react-bootstrap';
+import { favouritesAtom } from '../store'; // Adjust the path as necessary
+import { Card, Button, Container, Row, Col } from 'react-bootstrap';
 import useSWR from 'swr';
 
 export default function ArtworkCardDetail({ objectID }) {
     const { data, error } = useSWR(`https://collectionapi.metmuseum.org/public/collection/v1/objects/${objectID}`);
-    const [favouritesList, setFavouritesList] = usePersistedAtom(favouritesAtom, 'favourites');
+    const [favouritesList, setFavouritesList] = useAtom(favouritesAtom);
     const [showAdded, setShowAdded] = useState(false);
 
     useEffect(() => {

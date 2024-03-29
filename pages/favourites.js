@@ -1,11 +1,10 @@
 import { useAtom } from 'jotai';
-import { favouritesAtom, usePersistedAtom } from '@/store';
+import { favouritesAtom } from '@/store';
 import ArtworkCard from '@/components/ArtworkCard';
 import { Row, Col, Container } from 'react-bootstrap';
 
-export default function Favourites() {
-    const [favouritesList] = usePersistedAtom(favouritesAtom, 'favourites');
-    console.log(favouritesList);
+export default function Favourites() { 
+    const [favouritesList] = useAtom(favouritesAtom);
 
     return (
         <Container className="mt-5">
