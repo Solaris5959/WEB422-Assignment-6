@@ -1,18 +1,28 @@
 import useSWR from 'swr';
 import { Card, Button } from 'react-bootstrap';
-import Link from 'next/link';
 import Error from 'next/error';
+import { useAtom } from 'jotai';
+import { favouritesAtom } from '../store';
+import { useState } from 'react';
 
-export default function ArtworkCard({ objectID }) {
-    const { data, error } = useSWR(`https://collectionapi.metmuseum.org/public/collection/v1/objects/${objectID}`);
+export default function ArtworkCardDetail({ objectID }) {
+    const { data, error } = useSWR(objectID ? `https://collectionapi.metmuseum.org/public/collection/v1/objects/${objectID}` : null);
+    const [favouritesList, setFavouritesList] = useAtom(favouritesAtom);
+    const [showAdded, setShowAdded] = useState(favouritesList.includes(objectID));
+
+    const favouritesClicked = () => {
+        if (showAdded) setFavouritesList(current => current.filter(fav => fav !== objectID));
+        else setFavouritesList(current => [...current, objectID]);
+
+        setShowAdded(!showAdded);
+    };
 
     if (error) return <Error statusCode={404} />;
     if (!data) return null;
 
     return (
         <Card>
-            { // only renders if data.primaryImage exists
-                data.primaryImage && <Card.Img src={data.primaryImage} />}
+            {data.primaryImage && <Card.Img src={data.primaryImage} />}
             <Card.Title className="p-3">{data.title || 'N/A'}</Card.Title>
             <Card.Text className="p-3">
                 <strong>Date: </strong>{data.objectDate || 'N/A'}
@@ -35,7 +45,15 @@ export default function ArtworkCard({ objectID }) {
                 <strong>Credit Line: </strong>{data.creditLine || 'N/A'}
                 <br />
                 <strong>Dimensions: </strong>{data.dimensions || 'N/A'}
+                <br />
+                <Button
+                    variant={showAdded ? "primary" : "outline-primary"}
+                    onClick={favouritesClicked}
+                    className="mt-2"
+                >
+                    {showAdded ? "+ Favourite (added)" : "+ Favourite"}
+                </Button>
             </Card.Text>
         </Card>
-    )
+    );
 }
