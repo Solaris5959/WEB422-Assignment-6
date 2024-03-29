@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Navbar, Nav, Form, FormControl, Button, Container } from 'react-bootstrap';
+import { Navbar, NavDropdown, Nav, Form, FormControl, Button, Container } from 'react-bootstrap';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 
@@ -43,6 +43,13 @@ export default function MainNav() {
                             <Button className="btn btn-success" type="submit">Search</Button>
                         </Form>
                         &nbsp;
+                        <NavDropdown title="User Name" id="nav-dropdown">
+                            <NavDropdown.Item href="/favourites">Favourites</NavDropdown.Item>
+                            <NavDropdown.Divider />
+                            <NavDropdown.Item href="#action/3.4">
+                                Separated link
+                            </NavDropdown.Item>
+                        </NavDropdown>
                     </Navbar.Collapse>
                 </Container>
             </Navbar>
