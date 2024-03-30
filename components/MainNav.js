@@ -2,15 +2,21 @@ import React, { useState } from 'react';
 import { Navbar, NavDropdown, Nav, Form, FormControl, Button, Container } from 'react-bootstrap';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import { useAtom } from 'jotai';
+import { searchHistoryAtom } from '@/store.js';
 
 export default function MainNav() {
     const router = useRouter();
     const [isExpanded, setIsExpanded] = useState(false);
+    const [searchHistory, setSearchHistory] = useAtom(searchHistoryAtom);
 
     const handleSubmit = (e) => {
         e.preventDefault();
         const searchField = e.target.search.value;
         setIsExpanded(false); // Collapse the navbar when a search is performed
+
+        setSearchHistory(current => [...current, `title=true&q=${searchField}`]);
+        
         router.push(`/artwork?title=true&q=${searchField}`);
     };
 

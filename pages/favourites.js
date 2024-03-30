@@ -9,6 +9,7 @@ export default function Favourites() {
     return (
         <Container className="mt-5">
             <h1>Favourites</h1>
+            <hr class="mt-2 mb-5"/>
             {favouritesList.length === 0 ? (
                 <p>Nothing Here. Try adding some new artwork to the list.</p>
             ) : (
