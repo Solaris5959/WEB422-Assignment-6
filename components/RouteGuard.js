@@ -18,6 +18,8 @@ export default function RouteGuard(props) {
 
     useEffect(() => {
         updateAtoms();  // Update atoms on initial load
+        
+        authCheck(router.pathname);
 
         const handleRouteChange = (url) => {
             authCheck(url);

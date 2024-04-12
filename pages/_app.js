@@ -1,7 +1,7 @@
 import '@/styles/bootstrap.min.css';
 import { SWRConfig } from 'swr';
-import Layout from '../components/Layout';
-
+import Layout from '@/components/Layout';
+import RouteGuard from '@/components/RouteGuard';
 
 function MyApp({ Component, pageProps }) {
     return (
@@ -19,9 +19,11 @@ function MyApp({ Component, pageProps }) {
                 return res.json();
             }
         }}>
-            <Layout>
-                <Component {...pageProps} />
-            </Layout>
+            <RouteGuard>
+                <Layout>
+                    <Component {...pageProps} />
+                </Layout>
+            </RouteGuard>
         </SWRConfig>
     );
 }
