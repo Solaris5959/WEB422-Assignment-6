@@ -1,16 +1,16 @@
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
 import { useAtom } from 'jotai';
-import { searchHistoryAtom } from '@/store.js';
+import { searchHistoryAtom } from '@/store'; // Ensure correct path
 import { Container, Form, Row, Col, Button } from 'react-bootstrap';
+import { addToHistory } from '@/lib/userData'; // Ensure this path is correct
 
-
-const AdvancedSearch = () => {
+export default function AdvancedSearch() {
     const { register, handleSubmit } = useForm();
     const [searchHistory, setSearchHistory] = useAtom(searchHistoryAtom);
     const router = useRouter();
 
-    const submitForm = (data) => {
+    const submitForm = async (data) => {
         let queryString = `${data.searchBy}=true`;
 
         if (data.geoLocation) queryString += `&geoLocation=${data.geoLocation}`;
@@ -19,7 +19,9 @@ const AdvancedSearch = () => {
         queryString += `&isHighlight=${data.isHighlight ? 'true' : 'false'}`;
         queryString += `&q=${data.q}`;
 
-        setSearchHistory(current => [...current, queryString]);
+        // Update the search history by adding the new search term using addToHistory
+        const updatedHistory = await addToHistory(queryString);
+        setSearchHistory(updatedHistory);
 
         router.push(`/artwork?${queryString}`);
     };
@@ -112,5 +114,3 @@ const AdvancedSearch = () => {
         </Container>
     );
 };
-
-export default AdvancedSearch;
