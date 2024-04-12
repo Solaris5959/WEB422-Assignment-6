@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useAtom } from 'jotai';
 import { favouritesAtom } from '../store'; // Adjust the path as necessary
-import { Card, Button, Container, Row, Col } from 'react-bootstrap';
+import { Card, Button } from 'react-bootstrap';
 import useSWR from 'swr';
+import { addToFavourites, removeFromFavourites } from '@/lib/userData'; // Adjust the path as necessary
 
 export default function ArtworkCardDetail({ objectID }) {
     const { data, error } = useSWR(`https://collectionapi.metmuseum.org/public/collection/v1/objects/${objectID}`);
@@ -10,14 +11,19 @@ export default function ArtworkCardDetail({ objectID }) {
     const [showAdded, setShowAdded] = useState(false);
 
     useEffect(() => {
-        setShowAdded(favouritesList.includes(objectID));
+        // Update showAdded based on whether objectID is in the favouritesList
+        setShowAdded(favouritesList?.includes(objectID));
     }, [favouritesList, objectID]);
 
-    const favouritesClicked = () => {
-        if (showAdded)
-            setFavouritesList(current => current.filter(fav => fav !== objectID));
-        else {
-            setFavouritesList(current => [...current, objectID]);
+    const favouritesClicked = async () => {
+        if (showAdded) {
+            // Remove from favourites if currently added
+            const newFavouritesList = await removeFromFavourites(objectID);
+            setFavouritesList(newFavouritesList);
+        } else {
+            // Add to favourites if not currently added
+            const newFavouritesList = await addToFavourites(objectID);
+            setFavouritesList(newFavouritesList);
         }
         setShowAdded(!showAdded);
     };
@@ -27,7 +33,7 @@ export default function ArtworkCardDetail({ objectID }) {
 
     return (
         <div style={{ marginTop: '20px' }}>
-            <Card >
+            <Card>
                 {data.primaryImage && <Card.Img variant="top" src={data.primaryImage} />}
                 <Card.Body>
                     <Card.Title>{data.title || 'N/A'}</Card.Title>
@@ -42,11 +48,9 @@ export default function ArtworkCardDetail({ objectID }) {
                     </Card.Text>
                     <Button
                         variant={showAdded ? 'primary' : 'outline-primary'}
-                        onClick={
-                            favouritesClicked
-                        }
+                        onClick={favouritesClicked}
                     >
-                        {showAdded ? '+ Favourite (added)' : '+ Favourite'}
+                        {showAdded ? '- Remove Favourite' : '+ Add to Favourite'}
                     </Button>
                 </Card.Body>
             </Card>
