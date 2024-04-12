@@ -5,11 +5,18 @@ import Link from 'next/link';
 import { useAtom } from 'jotai';
 import { searchHistoryAtom } from '@/store.js'; // Ensure correct path
 import { addToHistory } from '@/lib/userData'; // Ensure this path is correct
+import { readToken, removeToken } from '@/lib/authenticate';
 
 export default function MainNav() {
     const router = useRouter();
     const [isExpanded, setIsExpanded] = useState(false);
     const [searchHistory, setSearchHistory] = useAtom(searchHistoryAtom);
+    let token = readToken();
+
+    function logout() {
+        removeToken();
+        router.push('/');
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -42,26 +49,41 @@ export default function MainNav() {
                             <Link href="/" legacyBehavior passHref>
                                 <Nav.Link active={router.pathname === "/"} onClick={handleLinkClick}>Home</Nav.Link>
                             </Link>
-                            <Link href="/search" legacyBehavior passHref>
-                                <Nav.Link active={router.pathname === "/search"} onClick={handleLinkClick}>Advanced Search</Nav.Link>
-                            </Link>
-                        </Nav>
-                        &nbsp;
-                        <Form className="d-flex" onSubmit={handleSubmit}>
-                            <FormControl type="text" name="search" placeholder="Search" className="me-2" />
-                            <Button className="btn btn-success" type="submit">Search</Button>
-                        </Form>
-                        &nbsp;
-                        <Nav>
-                            <NavDropdown title="User Name" id="nav-dropdown">
-                                <Link href="/favourites" legacyBehavior passHref>
-                                    <NavDropdown.Item active={router.pathname === "/favourites"}>Favourites</NavDropdown.Item>
+                            {token && (
+                                <Link href="/search" legacyBehavior passHref>
+                                    <Nav.Link active={router.pathname === "/search"} onClick={handleLinkClick}>Advanced Search</Nav.Link>
                                 </Link>
-                                <Link href="/history" legacyBehavior passHref>
-                                    <NavDropdown.Item active={router.pathname === "/history"}>Search History</NavDropdown.Item>
-                                </Link>
-                            </NavDropdown>
+                            )}
                         </Nav>
+                        {token ? (
+                            <>
+                                <Form className="d-flex" onSubmit={handleSubmit}>
+                                    <FormControl type="text" name="search" placeholder="Search" className="me-2" />
+                                    <Button className="btn btn-success" type="submit">Search</Button>
+                                </Form>
+                                &nbsp;
+                                <Nav>
+                                    <NavDropdown title={token.userName || "User Name"} id="nav-dropdown">
+                                        <Link href="/favourites" legacyBehavior passHref>
+                                            <NavDropdown.Item onClick={handleLinkClick}>Favourites</NavDropdown.Item>
+                                        </Link>
+                                        <Link href="/history" legacyBehavior passHref>
+                                            <NavDropdown.Item onClick={handleLinkClick}>Search History</NavDropdown.Item>
+                                        </Link>
+                                        <NavDropdown.Item onClick={logout}>Logout</NavDropdown.Item>
+                                    </NavDropdown>
+                                </Nav>
+                            </>
+                        ) : (
+                            <Nav>
+                                <Link href="/login" legacyBehavior passHref>
+                                    <Nav.Link active={router.pathname === "/login"} onClick={handleLinkClick}>Login</Nav.Link>
+                                </Link>
+                                <Link href="/register" legacyBehavior passHref>
+                                    <Nav.Link active={router.pathname === "/register"} onClick={handleLinkClick}>Register</Nav.Link>
+                                </Link>
+                            </Nav>
+                        )}
                     </Navbar.Collapse>
                 </Container>
             </Navbar>
