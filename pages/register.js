@@ -44,6 +44,7 @@ export default function Register() {
                 type="text" 
                 id="userName" 
                 name="userName" 
+                placeholder="Enter your username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 required
@@ -56,6 +57,7 @@ export default function Register() {
                 type="password" 
                 id="password" 
                 name="password" 
+                placeholder="Enter your password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
@@ -68,6 +70,7 @@ export default function Register() {
                 type="password" 
                 id="password2" 
                 name="password2" 
+                placeholder="Re-enter your password"
                 value={password2}
                 onChange={(e) => setPassword2(e.target.value)}
                 required

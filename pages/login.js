@@ -49,6 +49,7 @@ export default function Login() {
                         type="text"
                         id="userName"
                         name="userName"
+                        placeholder="Enter your username"
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
                         required
@@ -61,6 +62,7 @@ export default function Login() {
                         type="password"
                         id="password"
                         name="password"
+                        placeholder="Enter your password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
