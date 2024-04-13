@@ -12,8 +12,10 @@ export default function RouteGuard(props) {
     const [searchHistory, setSearchHistory] = useAtom(searchHistoryAtom);
 
     async function updateAtoms() {
-        setFavouritesList(await getFavourites());
-        setSearchHistory(await getHistory());
+        if (localStorage.getItem('token')) {
+            setFavouritesList(await getFavourites());
+            setSearchHistory(await getHistory());
+        }
     }
 
     useEffect(() => {
@@ -31,7 +33,7 @@ export default function RouteGuard(props) {
         return () => {
             router.events.off('routeChangeComplete', handleRouteChange);
         };
-    }, [authCheck, router.events, router.pathname, updateAtoms]);
+    }, []);
 
     function authCheck(url) {
         const path = url.split('?')[0];
