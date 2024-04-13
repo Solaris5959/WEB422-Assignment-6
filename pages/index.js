@@ -8,7 +8,7 @@
 * 
 *  Name: Connor McDonald Student ID: 136123221 Date: Feb 23, 2024
 *
-*  Vercel App (Deployed) Link: https://web422-assignment-6.vercel.app/
+*  Vercel App (Deployed) Link: https://web-422-assignment-6-alpha.vercel.app/
 *
 ********************************************************************************/
 
